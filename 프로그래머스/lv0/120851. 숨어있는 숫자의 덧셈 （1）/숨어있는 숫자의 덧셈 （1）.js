@@ -1,13 +1,11 @@
 function solution(my_string) {
     var answer = 0;
-    const regex = /[^0-9]/g;
-    const result = my_string.replace(regex,"");
+    var x = /[1-9]/g;
+    var num = my_string.match(x);
     
-    for ( var i = 0; i < result.length; i++) {
-        answer += Number(result[i]) 
+    for(var i = 0; i < num.length; i++) {
+        answer += Number(num[i])
     }
-
     
-    console.log(result)
-    return answer ;
+    return answer;
 }
