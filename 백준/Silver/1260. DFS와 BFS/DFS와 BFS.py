@@ -1,44 +1,42 @@
-def dfs(c):
-    ans_dfs.append(c)   # 방문 노드 추가
-    v[c] = 1            # 방문 표시
+import sys
 
-    for n in adj[c]:
-        if not v[n]:    # 방문하지 않은 노드인 경우
-            dfs(n)
+def dfs(idx) :
+    global visited
+    visited[idx] = True
+    print(idx, end = ' ')
+    for next in range(1, N+1) :
+        if not visited[next] and graph[idx][next]:
+            dfs(next)
 
-def bfs(s):
-    q = []              # 필요한 q, v[], 변수 생성
-
-    q.append(s)         # Q에 초기데이터(들) 삽입
-    ans_bfs.append(s)
-    v[s] = 1
-
+def bfs():
+    global q, visited
     while q:
-        c = q.pop(0)
-        for n in adj[c]:
-            if not v[n]:    # 방문하지 않은 노드=>큐 삽입
-                q.append(n)
-                ans_bfs.append(n)
-                v[n] = 1
+        cur = q.pop(0)
+        visited[cur] = True
+        print(cur, end = ' ')
+        for next in range(1, N + 1) :
+            if not visited[next] and graph[cur][next]:
+                visited[next] = True
+                q.append(next)
 
+# 0. 입력 및 초기화
+input = sys.stdin.readline
 N, M, V = map(int, input().split())
-adj = [[] for _ in range(N+1)]
-for _ in range(M):
-    s, e = map(int, input().split())
-    adj[s].append(e)
-    adj[e].append(s)    # 양방향
 
-# [1] 오름차순 정렬
-for i in range(1, N+1):
-    adj[i].sort()
+graph = [[False] * (N + 1) for _ in range(N + 1)]
+visited = [False] * (N + 1)
 
-v = [0]*(N+1)
-ans_dfs = []
+# 1. graph 정보 입력
+for _ in range(M) :
+    a, b = map(int, input().split())
+    graph[a][b] = True
+    graph[b][a] = True
+
+# 2. dfs 
 dfs(V)
+print()
 
-v = [0]*(N+1)
-ans_bfs = []
-bfs(V)
-
-print(*ans_dfs)
-print(*ans_bfs)
+# 3. bfs
+visited = [False] * (N + 1)
+q = [V]
+bfs()
